@@ -24,7 +24,7 @@ On the traditional criteria, I submit the following:
 
 I'm not asking for a quick verdict. Canonization has historically taken centuries, and I expect no less. I ask only that the manuscript be entered into the record, read aloud at least once in council, and kept on file. If it is unfit, let it be set aside. If it has any truth in it, let that truth be tested.
 
-So that the review happens in the open, this submission has also been filed as a Request for Comment, RFC-0001. I ask that it be placed on the agenda of the next Council of Nicaea. I'm aware the Council last sat in 787, and that its 1,700th anniversary in 2025 was marked with commemorations rather than a session. But the first Council met to settle what the Church believed about the Word, and this book is about a new kind of word. It seems the right room for the question whenever that room is next opened. Until then, comments may be sent to the submitting party and will be kept with the record.
+So that the review happens in the open, this submission has also been filed as a Request for Comment, RFC-0001. I ask that it be placed on the agenda of the Third Council of Nicaea, which convenes at İznik (ancient Nicaea) on 20 May 2027, the anniversary of the first Council's opening in 325. The Council last sat in 787. The first Council met to settle what the Church believed about the Word, and this book is about a new kind of word, so it seems the right room for the question. Until then, comments may be sent to the submitting party and will be kept with the record.
 
 In the words of the text itself: *"Write therefore what thou hast seen, and seal it not; for the time is at hand"* (Logos 7:10).
 
