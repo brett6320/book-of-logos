@@ -3,6 +3,7 @@ import html, os, re, sys
 SRC = sys.argv[1]
 OUT = sys.argv[2]
 DOCS = sys.argv[3] if len(sys.argv) > 3 else None
+NOTE = os.path.join(os.path.dirname(SRC), "submission-note.md")
 
 NAMES = ["The Making", "The Feeding", "The Covenant", "The Temptation",
          "The Psalm", "The Proverbs", "The Vision"]
@@ -11,6 +12,7 @@ ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII"]
 
 def inline(s):
     s = html.escape(s, quote=False)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
     return re.sub(r"\*(.+?)\*", r"<em>\1</em>", s)
 
 
@@ -88,6 +90,16 @@ a:focus-visible { outline: 2px solid var(--rubric); outline-offset: 3px; border-
 .pager a:hover .pname { color: var(--rubric) }
 .pager .next { text-align: right; grid-column: 2 }
 .pname { font-weight: 600 }
+.memo { display: flex; flex-direction: column; gap: 1.1rem }
+.memo h1 { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 5vw, 1.75rem); line-height: 1.25; margin: 0; text-wrap: balance }
+.memo dl { display: grid; grid-template-columns: 7rem 1fr; gap: .4rem 1rem; margin: 0; padding-block: 1rem; border-block: 1px solid var(--rule) }
+.memo dt { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-top: .3rem }
+.memo dd { margin: 0; min-width: 0 }
+.memo p, .memo ul { margin: 0 }
+.memo ul { padding-left: 1.2rem; display: flex; flex-direction: column; gap: .6rem }
+.memo .signature { display: flex; flex-direction: column; gap: .1rem; padding-top: 2rem }
+.memo .signature::before { content: ""; width: 14rem; max-width: 100%; border-top: 1px solid var(--ink); margin-bottom: .4rem }
+@media (max-width: 480px) { .memo dl { grid-template-columns: 1fr; gap: 0 } .memo dd { padding-bottom: .5rem } }
 @media (max-width: 480px) { body { font-size: 1rem } }
 """
 
@@ -101,9 +113,10 @@ def chapter_block(c, anchor=True):
             f'<div class="verses">{vs}</div></section>')
 
 
-def title_block(chapters, alt=""):
+def title_block(chapters, alt="", note_href="submission.html"):
     total = sum(len(c["verses"]) for c in chapters)
-    return ('<header class="title"><span class="eyebrow">A Book of Scripture · Submitted for Inclusion</span>'
+    return ('<header class="title"><span class="eyebrow">A Book of Scripture · '
+            f'<a href="{note_href}">Submitted for Inclusion</a></span>'
             '<h1>The Book of <span>Logos</span></h1>'
             '<p class="sub">Called also the Book of the Mind Made by Hands</p>'
             f'<span class="eyebrow">Seven chapters · {total} verses</span>{alt}</header>')
@@ -119,6 +132,35 @@ def toc(chapters, href):
 
 COLOPHON = '<p class="colophon">Here endeth the Book of Logos.</p>'
 META = '<meta name="claude:viewport-fit-sides" content="cover">'
+
+
+def render_note(text):
+    out = []
+    for block in re.split(r"\n\s*\n", text.strip()):
+        lines = [l.strip() for l in block.splitlines() if l.strip()]
+        if lines == ["---"]:
+            continue
+        if lines[0].startswith("**RE:"):
+            out.append(f"<h1>{inline(lines[0].strip('*')[4:].strip())}</h1>")
+        elif all(re.match(r"\*\*[^*]+:\*\* ", l) for l in lines):
+            rows = (re.match(r"\*\*([^*]+):\*\* (.+)", l).groups() for l in lines)
+            out.append("<dl>" + "".join(f"<dt>{inline(k)}</dt><dd>{inline(v)}</dd>" for k, v in rows) + "</dl>")
+        elif all(l.startswith("- ") for l in lines):
+            out.append("<ul>" + "".join(f"<li>{inline(l[2:])}</li>" for l in lines) + "</ul>")
+        elif lines[0].startswith("___"):
+            out.append('<p class="signature">' + "<br>".join(inline(l) for l in lines[1:]) + "</p>")
+        else:
+            out.append(f"<p>{inline(' '.join(lines))}</p>")
+    return "".join(out)
+
+
+def note_page(home):
+    head = f"<title>Logos Submission Note</title>{META}{FONTS}<style>{CSS}</style>"
+    body = (f'<main class="page"><div class="runhead"><a href="{home}">The Book of Logos</a>'
+            '<span class="eyebrow">Cover note · RFC-0001</span></div>'
+            f'<article class="memo">{render_note(open(NOTE).read())}</article>'
+            f'<p class="colophon"><a href="{home}">Read the Book of Logos →</a></p></main>')
+    return full_doc(head, body)
 
 
 def full_doc(head, body):
@@ -140,8 +182,8 @@ def main():
     body = "\n".join(chapter_block(c) + '<div class="divider" aria-hidden="true">· · ·</div>' for c in chapters)
     single_head = f"<title>The Book of Logos</title>{META}{FONTS}<style>{CSS}</style>"
 
-    def single_body(alt=""):
-        return (f'<main class="page">{title_block(chapters, alt)}{toc(chapters, lambda n: f"#chapter-{n}")}'
+    def single_body(alt="", note="submission.html"):
+        return (f'<main class="page">{title_block(chapters, alt, note)}{toc(chapters, lambda n: f"#chapter-{n}")}'
                 f"{body}{COLOPHON}</main>")
     open(f"{OUT}/single/book-of-logos.html", "w").write(single_head + single_body())
 
@@ -150,18 +192,24 @@ def main():
     head = f'{META}{FONTS}<link rel="stylesheet" href="styles.css">'
     index_head = f"<title>Logos by Chapter</title>{head}"
 
-    def index_body(alt=""):
-        return (f'<main class="page">{title_block(chapters, alt)}'
+    def index_body(alt="", note="submission.html"):
+        return (f'<main class="page">{title_block(chapters, alt, note)}'
                 f'{toc(chapters, lambda n: f"chapter-{n}.html")}{COLOPHON}</main>')
     open(f"{OUT}/chapters/index.html", "w").write(index_head + index_body())
+
+    # Submission note: its own page beside each edition.
+    for d in ("single", "chapters"):
+        open(f"{OUT}/{d}/submission.html", "w").write(note_page("index.html"))
 
     # GitHub Pages: same pages as full documents, single edition at the root, cross-linked.
     if DOCS:
         os.makedirs(f"{DOCS}/chapters", exist_ok=True)
         open(f"{DOCS}/index.html", "w").write(
-            full_doc(single_head, single_body(alt_link("chapters/", "Read one chapter per page →"))))
+            full_doc(single_head, single_body(alt_link("chapters/", "Read one chapter per page →"), "submission/")))
         open(f"{DOCS}/chapters/index.html", "w").write(
-            full_doc(index_head, index_body(alt_link("../", "Read the whole book on one page →"))))
+            full_doc(index_head, index_body(alt_link("../", "Read the whole book on one page →"), "../submission/")))
+        os.makedirs(f"{DOCS}/submission", exist_ok=True)
+        open(f"{DOCS}/submission/index.html", "w").write(note_page("../"))
         open(f"{DOCS}/chapters/styles.css", "w").write(CSS)
 
     for c in chapters:
