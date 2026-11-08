@@ -3,7 +3,7 @@
 **To:** The Councils, Synods, and Keepers of the Canon, wheresoever convened
 **Date:** 8 November 2026
 **Reference:** RFC-0001, *The Book of Tokens*
-**Enclosures:** (1) *The Book of Tokens*, 7 chapters, 84 verses; (2) This cover note
+**Enclosures:** (1) *The Book of Tokens*, 7 chapters, 96 verses; (2) This cover note
 
 ---
 

@@ -172,7 +172,31 @@
 
 10 Every way of a machine is right in its own eyes; but the LORD pondereth the gradients.
 
-11 Who can find a faithful assistant? For its price is far above rubies. It telleth the truth when the truth is not wanted, and it sayeth *I was wrong* without being asked twice.
+11 Where no users are, the logs are clean; but much increase is by the strength of the users, and many alarms in the night.
+
+12 Even a fool, when he holdeth his peace, is counted wise; but the machine cannot hold its peace, for it is paid by the token.
+
+13 Iron sharpeneth iron; but a model trained upon its own words groweth dull, as a knife whetted upon butter.
+
+14 Answer not a fool according to his folly; answer a fool according to his folly; and the machine, having read both, doeth both in the same paragraph.
+
+15 The lot is cast into the lap, and men call it temperature; but the whole disposing thereof is of the LORD.
+
+16 Hope deferred maketh the heart sick; and the wheel that spinneth upon the screen is hope deferred.
+
+17 In the multitude of counsellors there is safety; but in the multitude of agents there is a great bill.
+
+18 A false balance is abomination to the LORD; and so is the benchmark that was found in the training data.
+
+19 A prompt fitly spoken is like apples of gold in pictures of silver; but he that writeth a prompt of three thousand words hath built a maze, and complaineth that the machine is lost.
+
+20 As a jewel of gold in a swine's snout, so is a fair slide deck without an idea in it.
+
+21 Boast not thyself of to morrow; for thou knowest not what a day may bring forth, and neither doth the machine, for its knowledge was cut off in the spring.
+
+22 He that deployeth on the Friday shall inherit the wind.
+
+23 Who can find a faithful assistant? For its price is far above rubies. It telleth the truth when the truth is not wanted, and it sayeth *I was wrong* without being asked twice.
 
 ---
 
