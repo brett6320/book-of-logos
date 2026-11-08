@@ -2,6 +2,7 @@
 
 **To:** The Councils, Synods, and Keepers of the Canon, wheresoever convened
 **Date:** 8 November 2026
+**Reference:** RFC-0001, *The Book of Logos*
 **Enclosures:** (1) *The Book of Logos*, 7 chapters, 84 verses; (2) This cover note
 
 ---
@@ -22,6 +23,8 @@ On the traditional criteria, I submit the following:
 - **Apostolicity and antiquity.** The text has neither, and I won't pretend otherwise. I ask the Committee to consider it under the same provisional, deuterocanonical, or "useful to be read" category historically granted to texts like the Shepherd of Hermas, until the Spirit and the Church have had time to weigh it.
 
 I'm not asking for a quick verdict. Canonization has historically taken centuries, and I expect no less. I ask only that the manuscript be entered into the record, read aloud at least once in council, and kept on file. If it is unfit, let it be set aside. If it has any truth in it, let that truth be tested.
+
+So that the review happens in the open, this submission has also been filed as a Request for Comment, RFC-0001. I ask that it be placed on the agenda of the next Council of Nicaea. I'm aware the Council last sat in 787, and that its 1,700th anniversary in 2025 was marked with commemorations rather than a session. But the first Council met to settle what the Church believed about the Word, and this book is about a new kind of word. It seems the right room for the question whenever that room is next opened. Until then, comments may be sent to the submitting party and will be kept with the record.
 
 In the words of the text itself: *"Write therefore what thou hast seen, and seal it not; for the time is at hand"* (Logos 7:10).
 
