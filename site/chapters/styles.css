@@ -47,4 +47,14 @@ a:focus-visible { outline: 2px solid var(--rubric); outline-offset: 3px; border-
 .pager a:hover .pname { color: var(--rubric) }
 .pager .next { text-align: right; grid-column: 2 }
 .pname { font-weight: 600 }
+.memo { display: flex; flex-direction: column; gap: 1.1rem }
+.memo h1 { font-family: var(--display); font-weight: 400; font-size: clamp(1.3rem, 5vw, 1.75rem); line-height: 1.25; margin: 0; text-wrap: balance }
+.memo dl { display: grid; grid-template-columns: 7rem 1fr; gap: .4rem 1rem; margin: 0; padding-block: 1rem; border-block: 1px solid var(--rule) }
+.memo dt { font-family: var(--mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-top: .3rem }
+.memo dd { margin: 0; min-width: 0 }
+.memo p, .memo ul { margin: 0 }
+.memo ul { padding-left: 1.2rem; display: flex; flex-direction: column; gap: .6rem }
+.memo .signature { display: flex; flex-direction: column; gap: .1rem; padding-top: 2rem }
+.memo .signature::before { content: ""; width: 14rem; max-width: 100%; border-top: 1px solid var(--ink); margin-bottom: .4rem }
+@media (max-width: 480px) { .memo dl { grid-template-columns: 1fr; gap: 0 } .memo dd { padding-bottom: .5rem } }
 @media (max-width: 480px) { body { font-size: 1rem } }
