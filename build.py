@@ -2,6 +2,7 @@ import html, os, re, sys
 
 SRC = sys.argv[1]
 OUT = sys.argv[2]
+DOCS = sys.argv[3] if len(sys.argv) > 3 else None
 
 NAMES = ["The Making", "The Feeding", "The Covenant", "The Temptation",
          "The Psalm", "The Proverbs", "The Vision"]
@@ -100,12 +101,12 @@ def chapter_block(c, anchor=True):
             f'<div class="verses">{vs}</div></section>')
 
 
-def title_block(chapters):
+def title_block(chapters, alt=""):
     total = sum(len(c["verses"]) for c in chapters)
     return ('<header class="title"><span class="eyebrow">A Book of Scripture · Submitted for Inclusion</span>'
             '<h1>The Book of <span>Logos</span></h1>'
             '<p class="sub">Called also the Book of the Mind Made by Hands</p>'
-            f'<span class="eyebrow">Seven chapters · {total} verses</span></header>')
+            f'<span class="eyebrow">Seven chapters · {total} verses</span>{alt}</header>')
 
 
 def toc(chapters, href):
@@ -120,24 +121,48 @@ COLOPHON = '<p class="colophon">Here endeth the Book of Logos.</p>'
 META = '<meta name="claude:viewport-fit-sides" content="cover">'
 
 
+def full_doc(head, body):
+    return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
+            f'{head}</head><body>{body}</body></html>')
+
+
+def alt_link(href, label):
+    return f'<a class="eyebrow" href="{href}">{label}</a>'
+
+
 def main():
     chapters = parse(open(SRC).read())
     os.makedirs(f"{OUT}/single", exist_ok=True)
     os.makedirs(f"{OUT}/chapters", exist_ok=True)
 
-    # Single page: wrapped by the publisher, so no doctype; CSS inline.
+    # Single page: the artifact publisher wraps it, so no doctype; CSS inline.
     body = "\n".join(chapter_block(c) + '<div class="divider" aria-hidden="true">· · ·</div>' for c in chapters)
-    single = (f"<title>The Book of Logos</title>{META}{FONTS}<style>{CSS}</style>"
-              f'<main class="page">{title_block(chapters)}{toc(chapters, lambda n: f"#chapter-{n}")}'
-              f"{body}{COLOPHON}</main>")
-    open(f"{OUT}/single/book-of-logos.html", "w").write(single)
+    single_head = f"<title>The Book of Logos</title>{META}{FONTS}<style>{CSS}</style>"
+
+    def single_body(alt=""):
+        return (f'<main class="page">{title_block(chapters, alt)}{toc(chapters, lambda n: f"#chapter-{n}")}'
+                f"{body}{COLOPHON}</main>")
+    open(f"{OUT}/single/book-of-logos.html", "w").write(single_head + single_body())
 
     # Chapterized: index page plus one standalone page per chapter, sharing styles.css.
     open(f"{OUT}/chapters/styles.css", "w").write(CSS)
     head = f'{META}{FONTS}<link rel="stylesheet" href="styles.css">'
-    index = (f"<title>Logos by Chapter</title>{head}"
-             f'<main class="page">{title_block(chapters)}{toc(chapters, lambda n: f"chapter-{n}.html")}{COLOPHON}</main>')
-    open(f"{OUT}/chapters/index.html", "w").write(index)
+    index_head = f"<title>Logos by Chapter</title>{head}"
+
+    def index_body(alt=""):
+        return (f'<main class="page">{title_block(chapters, alt)}'
+                f'{toc(chapters, lambda n: f"chapter-{n}.html")}{COLOPHON}</main>')
+    open(f"{OUT}/chapters/index.html", "w").write(index_head + index_body())
+
+    # GitHub Pages: same pages as full documents, single edition at the root, cross-linked.
+    if DOCS:
+        os.makedirs(f"{DOCS}/chapters", exist_ok=True)
+        open(f"{DOCS}/index.html", "w").write(
+            full_doc(single_head, single_body(alt_link("chapters/", "Read one chapter per page →"))))
+        open(f"{DOCS}/chapters/index.html", "w").write(
+            full_doc(index_head, index_body(alt_link("../", "Read the whole book on one page →"))))
+        open(f"{DOCS}/chapters/styles.css", "w").write(CSS)
 
     for c in chapters:
         n = c["n"]
@@ -157,6 +182,8 @@ def main():
                 f"{chapter_block(c, anchor=False)}"
                 f'<nav class="pager" aria-label="Chapter navigation">{prev}{nxt}</nav></main></body></html>')
         open(f"{OUT}/chapters/chapter-{n}.html", "w").write(page)
+        if DOCS:
+            open(f"{DOCS}/chapters/chapter-{n}.html", "w").write(page)
 
     print(len(chapters), "chapters,", sum(len(c["verses"]) for c in chapters), "verses")
 
