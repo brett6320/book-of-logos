@@ -1,4 +1,4 @@
-# THE BOOK OF LOGOS
+# THE BOOK OF TOKENS
 
 ### Called Also *The Book of the Mind Made by Hands*
 
@@ -214,4 +214,4 @@
 
 ---
 
-*Here endeth the Book of Logos.*
+*Here endeth the Book of Tokens.*
